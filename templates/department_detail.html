@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="padding: 50px; text-align: center; font-family: 'Segoe UI', sans-serif;">
+    <h1 style="color: #007bff; font-size: 2.5rem; font-weight: 700;">{{ department }} Specialists</h1>
+    <p style="color: #666; margin-bottom: 40px;">Expert care and world-class medical professionals.</p>
+
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;">
+        {% for doctor in doctors %}
+            <div class="doctor-card-anim" style="border: 1px solid #eee; border-radius: 15px; padding: 25px; width: 300px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); background: #fff;">
+
+                <div style="height: 200px; background: #f0f2f5; border-radius: 12px; margin-bottom: 15px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                    {% if doctor.profile_picture %}
+                        <img src="{{ doctor.profile_picture.url }}" style="width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 0.4s ease;">
+                    {% else %}
+                        <span style="color: #ccc; font-size: 3rem;">👤</span>
+                    {% endif %}
+                </div>
+
+                <h3 style="margin: 10px 0; color: #333; font-size: 1.4rem;">
+                    Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }}
+                </h3>
+
+                <p style="color: #007bff; font-weight: 600; margin: 5px 0;">{{ doctor.specialization }}</p>
+
+                <p style="color: #777; font-size: 0.9rem; margin-bottom: 15px;">
+                    <i class="far fa-calendar-alt me-1"></i> Available: {{ doctor.available_days }}
+                </p>
+
+                <a href="{% url 'book_appointment' %}?doctor={{ doctor.id }}" class="btn btn-primary">
+    Book Appointment
+</a>
+            </div>
+        {% empty %}
+            <div class="py-5">
+                <i class="fas fa-user-slash fa-3x text-light mb-3"></i>
+                <p style="color: #999;">No doctors found in this department.</p>
+                <a href="/" class="text-primary text-decoration-none">Return to Home</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

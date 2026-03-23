@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="mb-0"><i class="fas fa-boxes me-2"></i>Update Stock: {{ medicine.name }}</h5>
+                </div>
+                <div class="card-body p-4 bg-light">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Current Stock Quantity</label>
+                            {{ inv_form.stock_quantity }}
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Expiry Date</label>
+                            {{ inv_form.expiry_date }}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg shadow-sm">Update Inventory</button>
+                            <a href="{% url 'inventory_list' %}" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

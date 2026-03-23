@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-primary py-3">
+                    <h5 class="text-white mb-0 fw-bold"><i class="fas fa-pills me-2"></i>Inventory Entry</h5>
+                </div>
+                <div class="card-body p-4">
+                  <form method="POST">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label class="small fw-bold text-muted">MEDICINE NAME</label>
+        {{ med_form.name }}
+    </div>
+
+    <div class="mb-3">
+        <label class="small fw-bold text-muted">PRICE (PER UNIT)</label>
+        {{ med_form.price }}
+    </div>
+
+    <div class="mb-3">
+        <label class="small fw-bold text-muted">MANUFACTURER</label>
+        {{ med_form.manufacturer }}
+    </div>
+
+    <div class="mb-3">
+        <label class="small fw-bold text-muted">INITIAL STOCK</label>
+        {{ inv_form.stock_quantity }}
+    </div>
+
+    <div class="row">
+        <div class="col-12 mb-3">
+            <label class="small fw-bold text-muted">EXPIRY DATE</label>
+            {{ inv_form.expiry_date }}
+        </div>
+    </div>
+
+    <div class="d-grid mt-4">
+        <button type="submit" class="btn btn-primary rounded-pill py-2 fw-bold shadow">Save to Pharmacy</button>
+        <a href="{% url 'admin_pharmacy_list' %}" class="btn btn-link text-muted mt-2">Go Back</a>
+    </div>
+</form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

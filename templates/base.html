@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityCare Hospital</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand fw-bold text-primary" href="/">
+                <i class="fas fa-heartbeat fa-lg me-2 text-danger"></i>CityCare
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'doctor_list' %}">Find a Doctor</a></li>
+                </ul>
+
+                <div class="d-flex align-items-center">
+                    {% if user.is_authenticated %}
+                        <div class="dropdown me-3">
+                            <a href="#" class="text-secondary position-relative text-decoration-none" data-bs-toggle="dropdown">
+                                <i class="fas fa-bell fa-lg"></i>
+                                {% if unread_count > 0 %}
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">
+                                        {{ unread_count }}
+                                    </span>
+                                {% endif %}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="width: 320px;">
+                                <li class="dropdown-header d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold text-dark">Notifications</span>
+                                    {% if unread_count > 0 %}
+                                        <a href="{% url 'mark_notifications_read' %}" class="text-primary small">Mark all read</a>
+                                    {% endif %}
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                {% for notif in notifications %}
+                                    <li><div class="dropdown-item py-2 small border-bottom">{{ notif.message }}</div></li>
+                                {% empty %}
+                                    <li><span class="dropdown-item text-muted small py-3 text-center">No new notifications.</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <a href="{% url 'logout' %}" class="btn btn-danger me-2 btn-sm px-3 shadow-sm">Logout</a>
+
+                        {% if user.is_admin or user.is_superuser %}
+                            <a href="{% url 'admin_dashboard' %}" class="btn btn-primary btn-sm">Admin Panel</a>
+                        {% elif user.is_doctor %}
+                            <a href="{% url 'doctor_dashboard' %}" class="btn btn-primary btn-sm">Doctor Panel</a>
+                        {% else %}
+                            <a href="{% url 'patient_dashboard' %}" class="btn btn-primary btn-sm">My Portal</a>
+                        {% endif %}
+
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-primary me-2 px-4 shadow-sm">Login</a>
+                        <a href="{% url 'register' %}" class="btn btn-primary px-4 shadow-sm">Register</a>
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-dark text-white pt-5 pb-3 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>CityCare Hospital</h5>
+                    <p class="text-white-50">Providing world-class medical care with compassion and excellence.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Connect With Us</h5>
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="#" class="text-white h4 text-decoration-none"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-white h4 text-decoration-none"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4 text-white-50 border-top pt-3">
+                &copy; 2026 CityCare Hospital Management System.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 100
+        });
+    </script>
+</body>
+</html>

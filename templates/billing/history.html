@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Your Billing History</h2>
+    <table border="1">
+        <tr>
+            <th>Invoice ID</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        {% for invoice in invoices %}
+        <tr>
+            <td>#{{ invoice.id }}</td>
+            <td>${{ invoice.amount }}</td>
+            <td>{{ invoice.status }}</td>
+            <td>
+                {% if invoice.status == 'Unpaid' %}
+                    <button>Pay Now</button> {% else %}
+                    Paid on {{ invoice.paid_on|date:"M d, Y" }}
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No invoices found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

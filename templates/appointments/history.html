@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="GET" class="mb-4 d-flex justify-content-end">
+        <div class="input-group" style="max-width: 300px;">
+            <label class="input-group-text bg-white border-end-0"><i class="fas fa-filter text-muted"></i></label>
+            <select name="status" class="form-select border-start-0" onchange="this.form.submit()">
+                <option value="">All Appointments</option>
+                <option value="Pending" {% if status_filter =='Pending' %}selected{% endif %}>Pending</option>
+                <option value="Approved" {% if status_filter =='Approved' %}selected{% endif %}>Approved</option>
+                <option value="Completed" {% if status_filter =='Completed' %}selected{% endif %}>Completed</option>
+                <option value="Cancelled" {% if status_filter =='Cancelled' %}selected{% endif %}>Cancelled</option>
+            </select>
+        </div>
+    </form>
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary"><i class="fas fa-history me-2"></i>My Appointment History</h2>
+        <a href="{% url 'book_appointment' %}" class="btn btn-primary shadow-sm"><i class="fas fa-plus me-2"></i>New Booking</a>
+    </div>
+
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Date & Time</th>
+                            <th>Doctor</th>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th class="text-center pe-4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appt in appointments %}
+                        <tr>
+                            <td class="ps-4 fw-bold">
+                                {{ appt.date|date:"M d, Y" }} <br>
+                                <small class="text-muted">{{ appt.time|time:"g:i A" }}</small>
+                            </td>
+                            <td>Dr. {{ appt.doctor.user.last_name }}</td>
+                            <td>{{ appt.doctor.department.name|default:"General" }}</td>
+                            <td>
+                                {% if appt.status == 'Pending' %}
+                                    <span class="badge bg-warning text-dark"><i class="fas fa-clock me-1"></i>Pending</span>
+                                {% elif appt.status == 'Approved' %}
+                                    <span class="badge bg-success"><i class="fas fa-check me-1"></i>Approved</span>
+                                {% elif appt.status == 'Completed' %}
+                                    <span class="badge bg-primary"><i class="fas fa-clipboard-check me-1"></i>Completed</span>
+                                {% elif appt.status == 'Cancelled' %}
+                                    <span class="badge bg-danger"><i class="fas fa-times me-1"></i>Cancelled</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center pe-4">
+                                {% if appt.status == 'Pending' or appt.status == 'Approved' %}
+                                    <a href="{% url 'cancel_appointment' appt.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to cancel this appointment?');">
+                                        Cancel
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted small">N/A</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-5 text-muted">
+                                <i class="far fa-folder-open fa-3x mb-3 opacity-50"></i>
+                                <h5>No appointments found</h5>
+                                <p>You haven't booked any appointments yet.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

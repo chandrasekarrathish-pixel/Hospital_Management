@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow border-0 rounded-lg mt-5 hover-elevate">
+                <div class="card-header bg-primary text-white text-center py-4 border-bottom-0">
+                    <h3 class="font-weight-bold mb-0"><i class="fas fa-user-circle me-2"></i>Welcome Back</h3>
+                </div>
+
+                <div class="card-body p-5 bg-light">
+                    <div class="alert alert-info text-center small mb-4 shadow-sm" role="alert">
+                        <i class="fas fa-magic me-1"></i> CityCare securely detects your role (Patient, Doctor, or Admin) and will route you to your personal dashboard.
+                    </div>
+
+                    {% if form.errors %}
+                        <div class="alert alert-danger small">
+                            Your username and password didn't match. Please try again.
+                        </div>
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="form-floating mb-3">
+                            <input type="text" name="username" class="form-control" id="inputUsername" placeholder="Username" required>
+                            <label for="inputUsername"><i class="fas fa-user text-muted me-2"></i>Username</label>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password" required>
+                            <label for="inputPassword"><i class="fas fa-lock text-muted me-2"></i>Password</label>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4 mb-0">
+                            <button type="submit" class="btn btn-primary btn-lg shadow-sm">Secure Login</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer text-center py-3 bg-white">
+                    <div class="small">
+                        New to CityCare? <a href="{% url 'register' %}" class="text-decoration-none fw-bold">Register as a Patient</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary"><i class="fas fa-calendar-check me-2"></i>Appointment Registry</h2>
+        <a href="{% url 'admin_panel' %}" class="btn btn-outline-secondary rounded-pill px-4">
+            <i class="fas fa-arrow-left me-1"></i> Dashboard
+        </a>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form method="GET" action="{% url 'admin_appointment_list' %}" class="d-flex">
+                <div class="input-group shadow-sm rounded-pill overflow-hidden">
+                    <span class="input-group-text bg-white border-0 ps-3">
+                        <i class="fas fa-search text-muted"></i>
+                    </span>
+                    <input type="text" name="search" class="form-control border-0 py-2"
+                           placeholder="Search by Patient Name or Mobile..."
+                           value="{{ search_query }}">
+                    <button class="btn btn-primary px-4" type="submit">Search</button>
+                </div>
+                {% if search_query %}
+                    <a href="{% url 'admin_appointment_list' %}" class="btn btn-link text-muted ms-2 align-self-center">Clear</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light text-muted small text-uppercase" style="position: sticky; top: 0; z-index: 10; background-color: #f8f9fa;">
+                    <tr>
+                        <th class="ps-4">Patient</th>
+                        <th>Assigned Doctor</th>
+                        <th>Date & Time</th>
+                        <th>Reason/Symptoms</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appt in appointments %}
+                    <tr>
+                        <td class="ps-4">
+                            <div class="fw-bold text-dark">{{ appt.patient.user.get_full_name|default:appt.patient.user.username }}</div>
+                            <small class="text-muted">{{ appt.patient.contact_number|default:"No Phone" }}</small>
+                        </td>
+                        <td>
+                            <div class="text-primary fw-bold">Dr. {{ appt.doctor.user.last_name }}</div>
+                            <small class="text-muted small">{{ appt.doctor.department.name }}</small>
+                        </td>
+                        <td>
+                            <div class="fw-bold text-dark">{{ appt.appointment_date|date:"M d, Y" }}</div>
+                            <div class="text-muted small">{{ appt.appointment_time|time:"h:i A" }}</div>
+                        </td>
+                        <td class="text-truncate" style="max-width: 200px;">
+                            {{ appt.reason|default:"General Checkup" }}
+                        </td>
+                        <td class="text-center">
+                            {% if appt.status == 'Approved' %}
+                                <span class="badge bg-success-soft text-success rounded-pill px-3">Approved</span>
+                            {% elif appt.status == 'Pending' %}
+                                <span class="badge bg-warning-soft text-warning rounded-pill px-3">Pending</span>
+                            {% else %}
+                                <span class="badge bg-danger-soft text-danger rounded-pill px-3">{{ appt.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {% if appt.status == 'Pending' %}
+                                <a href="{% url 'approve_appointment' appt.id %}" class="btn btn-sm btn-success rounded-pill px-3 shadow-sm">
+                                    <i class="fas fa-check me-1"></i> Approve
+                                </a>
+                            {% else %}
+                                <span class="text-muted small italic">No actions</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-5 text-muted">No appointments found in the system.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-success-soft { background-color: #e8f5e9; }
+    .bg-warning-soft { background-color: #fff3e0; }
+    .bg-danger-soft { background-color: #ffebee; }
+
+    /* Custom Scrollbar for the table */
+.table-responsive::-webkit-scrollbar {
+    width: 6px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+    background-color: #0d6efd;
+    border-radius: 10px;
+}
+.table-responsive::-webkit-scrollbar-track {
+    background: #f8f9fa;
+}
+</style>
+{% endblock %}

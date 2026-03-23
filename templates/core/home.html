@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* Turn 14 Fix: Special container for hover scaling */
+    .about-hover-pop-container {
+        overflow: hidden; /* Keeps images inside the rounded corners on zoom */
+        transition: transform 0.4s ease-in-out, shadow 0.4s ease-in-out;
+        cursor: pointer;
+    }
+
+    /* The "pop up slightly" effect on hover */
+    .about-hover-pop-container:hover {
+        transform: scale(1.04); /* Slight zoom in (defying gravity) */
+        box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important; /* Enhanced shadow */
+    }
+
+    /* Ensures carousel images fit perfectly */
+    .about-carousel .carousel-item img {
+        height: 500px; /* Match the layout height from Turn 13 */
+        object-fit: cover; /* Fills space without stretching */
+    }
+</style>
+
+<section class="hero-section py-5 text-white text-center shadow"
+         style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('{% static 'images/hero_hallway.jpg' %}');
+                background-size: cover;
+                background-position: center;
+                min-height: 80vh;
+                display: flex;
+                align-items: center;">
+    <div class="container py-5">
+        <h1 class="display-3 fw-bold mb-3" style="color: #ffffff; text-shadow: 2px 4px 10px rgba(0,0,0,0.5);" data-aos="fade-down">
+    Your Health, Our Priority
+</h1>
+        <p class="lead mb-5 opacity-75" data-aos="fade-up" data-aos-delay="100">State-of-the-art facilities with the best medical experts in the city.</p>
+        <div class="d-flex justify-content-center gap-3" data-aos="fade-up" data-aos-delay="200">
+            <a href="{% url 'doctor_list' %}" class="btn btn-primary btn-lg fw-bold rounded-pill shadow px-4">
+                <i class="fas fa-calendar-check me-2"></i> Book Appointment
+            </a>
+            <a href="{% url 'doctor_list' %}" class="btn btn-outline-light btn-lg fw-bold rounded-pill px-4 border-2">
+                <i class="fas fa-user-md me-2"></i> Find a Doctor
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="bg-danger text-white py-4 shadow-sm" data-aos="fade-up">
+    <div class="container">
+        <div class="row text-center align-items-center">
+            <div class="col-md-6 mb-3 mb-md-0 border-end border-white border-opacity-25 d-none d-md-block">
+                <h4 class="m-0 fw-light">
+                    <i class="fas fa-calendar-alt me-2"></i> Clinic Appointments: <strong class="fw-bold">+1 800-555-0199</strong>
+                </h4>
+            </div>
+            <div class="col-md-6">
+                <h4 class="m-0 fw-light">
+                    <i class="fas fa-ambulance fa-pulse me-2"></i> 24/7 Emergency: <strong class="fw-bold">911</strong>
+                </h4>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-white overflow-hidden">
+    <div class="container py-5" data-aos="fade-up">
+        <div class="row align-items-center">
+
+            <div class="col-lg-6 mb-4 mb-lg-0" data-aos="zoom-in" data-aos-delay="100">
+                <div class="about-hover-pop-container rounded-4 shadow-lg" id="aboutShowcaseTrigger">
+
+                    <div id="aboutHospitalCarousel" class="carousel slide about-carousel" data-bs-ride="false" data-bs-interval="false">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="{% static 'images/about-hospital-1.jpg' %}" alt="Hospital View 1" class="d-block w-100 rounded-4">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'images/about-hospital-2.jpg' %}" alt="Hospital View 2" class="d-block w-100 rounded-4">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'images/about-hospital-3.jpg' %}" alt="Hospital View 3" class="d-block w-100 rounded-4">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-6 ps-lg-5">
+                <div class="p-lg-4">
+                    <h2 class="display-5 fw-bold text-primary mb-4">Pioneering Comprehensive & Compassionate Healthcare</h2>
+                    <p class="lead text-muted mb-5">Welcome to CityCare, where cutting-edge medical science meets unwavering compassion. We are dedicated to providing world-class medical services to our community, ensuring that every patient receives personalized care at every step of their journey.</p>
+
+                    <div class="row g-4 text-dark fs-5">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled m-0" style="line-height: 2.2;">
+                                <li><i class="fas fa-check-circle text-success me-2"></i> Advance Technology</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i> Specialist Doctors</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i> Quick Support</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled m-0" style="line-height: 2.2;">
+                                <li><i class="fas fa-check-circle text-success me-2"></i> Quick Appointment</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i> Medical & Surgical</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i> 24/7 Hours Service</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container py-5 mt-4">
+    <div class="text-center mb-5" data-aos="fade-up">
+        <h2 class="fw-bold text-primary">Our Specialities</h2>
+        <p class="text-muted">Comprehensive care across multiple medical disciplines</p>
+    </div>
+    <div class="row g-4">
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="card h-100 border-0 shadow-sm dept-card hover-elevate">
+                <div class="card-body text-center p-4">
+                    <div class="icon-circle bg-light text-danger mb-3 mx-auto" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                        <i class="fas fa-heartbeat fa-2x"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Cardiology</h5>
+                    <p class="card-text text-muted">Advanced heart care, surgeries, and rehabilitation programs.</p>
+                    <a href="{% url 'department_detail' 'cardiology' %}" class="learn-more-btn">
+                        Learn More <span>→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="card h-100 border-0 shadow-sm dept-card hover-elevate">
+                <div class="card-body text-center p-4">
+                    <div class="icon-circle bg-light text-primary mb-3 mx-auto" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                        <i class="fas fa-brain fa-2x"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Neurology</h5>
+                    <p class="card-text text-muted">Expert diagnosis and treatment of brain and nervous system disorders.</p>
+                    <a href="{% url 'department_detail' 'neurology' %}" class="learn-more-btn">
+                        Learn More <span>→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="card h-100 border-0 shadow-sm dept-card hover-elevate">
+                <div class="card-body text-center p-4">
+                    <div class="icon-circle bg-light text-success mb-3 mx-auto" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                        <i class="fas fa-bone fa-2x"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Orthopaedics</h5>
+                    <p class="card-text text-muted">Joint replacements, sports injuries, and spine treatments.</p>
+                    <a href="{% url 'department_detail' 'orthopaedics' %}" class="learn-more-btn">
+                        Learn More <span>→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Find the wrapper and the carousel
+        const triggerArea = document.getElementById('aboutShowcaseTrigger');
+        const carouselElement = document.getElementById('aboutHospitalCarousel');
+
+        // Initialize the Bootstrap Carousel Instance (Interval set to false)
+        const carouselInstance = new bootstrap.Carousel(carouselElement, {
+            interval: false, // Do not cycle on timer
+            ride: false // Do not start on load
+        });
+
+        // Event Listener: When mouse enters the area
+        triggerArea.addEventListener('mouseenter', function() {
+            // Instantly go to the next image when mouse arrives
+            carouselInstance.next();
+
+            // OPTIONAL: Start continuous sliding while mouse is there (every 2 seconds)
+            // If you only want it to slide ONCE per mouseover, remove these 3 lines
+            cycleInterval = setInterval(function() {
+                carouselInstance.next();
+            }, 2000);
+        });
+
+        // Event Listener: When mouse leaves the area
+        triggerArea.addEventListener('mouseleave', function() {
+            // Stop the continuous sliding
+            if (typeof cycleInterval !== 'undefined') {
+                clearInterval(cycleInterval);
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+
+

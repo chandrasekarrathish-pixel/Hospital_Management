@@ -1,0 +1,146 @@
+/* --- Modern Gradient Backgrounds --- */
+.bg-gradient-blue   { background: linear-gradient(135deg, #0d6efd 0%, #004494 100%); }
+.bg-gradient-green  { background: linear-gradient(135deg, #198754 0%, #0f5132 100%); }
+.bg-gradient-orange { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+.bg-gradient-red    { background: linear-gradient(135deg, #dc3545 0%, #a71d2a 100%); }
+
+/* --- Icon Shape (Glassmorphism) --- */
+.icon-shape {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.bg-white-20 {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(4px);
+}
+
+/* --- Dashboard Stat Card Enhancements --- */
+.stat-card {
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+    border: none !important;
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.12) !important;
+}
+
+/* --- NEW: Pharmacy Panel Scrollbar Logic --- */
+.pharmacy-scroll-container {
+    max-height: 500px; /* Limits the height of the panel */
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 0 0 1rem 1rem;
+}
+
+/* Scrollbar Styling for Chrome, Safari, and Edge */
+.pharmacy-scroll-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.pharmacy-scroll-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.pharmacy-scroll-container::-webkit-scrollbar-thumb {
+    background: #198754; /* Match your Green theme */
+    border-radius: 10px;
+    border: 2px solid #ffffff;
+}
+
+.pharmacy-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #146c43;
+}
+
+/* Sticky Header Fix for Scrolling */
+.table thead.sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #f8f9fa !important;
+}
+
+/* --- Inventory Row Animations --- */
+.inventory-row {
+    transition: all 0.2s ease;
+    opacity: 0;
+    animation: slideUp 0.4s ease-out forwards;
+}
+
+.inventory-row:hover {
+    background-color: #fcfcfc !important;
+    transform: translateX(5px);
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.inventory-row:nth-child(1) { animation-delay: 0.1s; }
+.inventory-row:nth-child(2) { animation-delay: 0.15s; }
+.inventory-row:nth-child(3) { animation-delay: 0.2s; }
+.inventory-row:nth-child(4) { animation-delay: 0.25s; }
+.inventory-row:nth-child(5) { animation-delay: 0.3s; }
+
+/* --- Professional Print Logic --- */
+@media print {
+    .d-print-none, #medSearch, #searchResults, .btn, nav, footer {
+        display: none !important;
+    }
+    #printableInvoice {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border: none !important;
+        box-shadow: none !important;
+    }
+}
+
+/* --- Table Status Soft Colors (FIXED TO SHOW PROPERLY) --- */
+.bg-danger-soft {
+    background-color: #fee2e2 !important;
+    color: #dc3545 !important;
+    border: 1px solid #fecaca;
+}
+.bg-success-soft {
+    background-color: #ecfdf5 !important;
+    color: #059669 !important;
+    border: 1px solid #d1fae5;
+}
+.bg-warning-soft {
+    background-color: #fffbeb !important;
+    color: #d97706 !important;
+    border: 1px solid #fef3c7;
+}
+.bg-info-soft {
+    background-color: #e0f2fe !important;
+    color: #0284c7 !important;
+    border: 1px solid #bae6fd;
+}
+/* Re-adding bg-primary-soft specifically for your dashboard numbers */
+.bg-primary-soft {
+    background-color: #e0f2fe !important;
+    color: #0056b3 !important;
+    border: 1px solid #bae6fd;
+}
+
+/* Pulse Animation */
+.animate-pulse-slow {
+    animation: pulse-simple 2s infinite;
+}
+
+@keyframes pulse-simple {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}

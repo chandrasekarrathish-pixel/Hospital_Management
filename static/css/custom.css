@@ -1,0 +1,145 @@
+/* --- Brand Colors & Global Variables --- */
+:root {
+    --primary-blue: #0d6efd;
+    --dark-blue: #0a58ca;
+    --light-bg: #f8f9fc;
+    --text-main: #2c3e50;
+    --card-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    --hover-shadow: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.2);
+}
+
+body {
+    background-color: var(--light-bg);
+    color: var(--text-main);
+    font-family: 'Nunito', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+}
+
+/* --- Custom Scrollbar --- */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-blue);
+}
+
+/* --- Card UI Polish --- */
+.card {
+    border-radius: 0.75rem;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Add this class to cards you want to elevate on hover (like doctor profiles or dashboard stats) */
+.hover-elevate:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow) !important;
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid #e3e6f0;
+    font-weight: bold;
+    border-top-left-radius: 0.75rem !important;
+    border-top-right-radius: 0.75rem !important;
+}
+
+/* --- Form Polish --- */
+.form-control, .form-select {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d3e2;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+/* --- Table Enhancements --- */
+.table th {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: #858796;
+    border-bottom-width: 2px;
+}
+
+.table-hover tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+/* --- Buttons & Badges --- */
+.btn {
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.badge {
+    padding: 0.5em 0.75em;
+    font-weight: 600;
+    border-radius: 0.35rem;
+}
+
+/* --- Animations --- */
+.fade-in {
+    animation: fadeIn 0.6s ease-in-out forwards;
+}
+
+.slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Speciality & Department Buttons --- */
+.learn-more-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.5rem;
+    margin-top: 1rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--primary-blue);
+    background-color: transparent;
+    border: 2px solid var(--primary-blue);
+    border-radius: 2rem; /* The "Pill" shape */
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.learn-more-btn:hover {
+    background-color: var(--primary-blue);
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Smooth arrow animation */
+.learn-more-btn span {
+    margin-left: 8px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.learn-more-btn:hover span {
+    transform: translateX(5px);
+}

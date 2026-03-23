@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary"><i class="fas fa-user-md me-2"></i>Doctor Registry</h2>
+        <a href="{% url 'admin_panel' %}" class="btn btn-outline-secondary rounded-pill px-4">
+            <i class="fas fa-arrow-left me-1"></i> Dashboard
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light text-muted small text-uppercase">
+                    <tr>
+                        <th class="ps-4">Doctor Name</th>
+                        <th>Department</th>
+                        <th>Specialization</th>
+                        <th>Email</th>
+                        <th class="text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doctor in doctors %}
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary-soft rounded-circle p-2 me-3 text-primary">
+                                    <i class="fas fa-user-md"></i>
+                                </div>
+                                <div class="fw-bold text-dark">Dr. {{ doctor.user.get_full_name|default:doctor.user.username }}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-info-soft text-info rounded-pill px-3">
+                                {{ doctor.department.name|default:"General" }}
+                            </span>
+                        </td>
+                        <td class="text-muted small">{{ doctor.specialization }}</td>
+                        <td>{{ doctor.user.email }}</td>
+                        <td class="text-center">
+                            <span class="badge bg-success-soft text-success">Active</span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">No doctors registered.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-primary-soft { background-color: #e7f1ff; }
+    .bg-info-soft { background-color: #e1f5fe; }
+    .bg-success-soft { background-color: #e8f5e9; }
+</style>
+{% endblock %}

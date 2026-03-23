@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary fw-bold"><i class="fas fa-notes-medical me-2"></i>Clinical File: {{ patient.user.get_full_name }}</h2>
+        <a href="{% url 'my_patients' %}" class="btn btn-outline-secondary rounded-pill">
+            <i class="fas fa-arrow-left me-2"></i>Back to Patient List
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+
+            <div class="card shadow-sm border-0 mb-4 bg-light">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="mb-1 text-muted small">Date of Birth</p>
+                        <p class="mb-2 fw-bold">{{ patient.date_of_birth|default:"N/A" }}</p>
+                        <p class="mb-1 text-muted small">Contact Number</p>
+                        <p class="mb-0 fw-bold">{{ patient.contact_number|default:"N/A" }}</p>
+                    </div>
+                    <div class="text-end">
+                        <p class="mb-1 text-muted small">Blood Group</p>
+                        <span class="badge bg-danger fs-6 px-3 py-2">{{ patient.blood_group|default:"N/A" }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="fw-bold text-dark mt-4 mb-3"><i class="fas fa-file-medical-alt me-2 text-warning"></i>Lab Reports & Imaging</h5>
+            <div class="row g-3 mb-5">
+                {% for report in lab_reports %}
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 hover-elevate">
+                        <a href="{{ report.report_file.url }}" target="_blank">
+                            <img src="{{ report.report_file.url }}" class="card-img-top" style="height: 160px; object-fit: cover;" alt="Lab Report">
+                        </a>
+                        <div class="card-body p-2 text-center bg-white">
+                            <small class="fw-bold text-dark d-block text-truncate">{{ report.test_name|default:"Diagnostic Image" }}</small>
+                            <small class="text-muted" style="font-size: 0.75rem;">{{ report.generated_on|date:"M d, Y" }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="p-4 border border-2 border-dashed rounded-3 bg-white text-center text-muted">
+                        <i class="fas fa-microscope fa-2x mb-2 opacity-25"></i>
+                        <p class="mb-0 small">No lab reports uploaded yet.</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <h5 class="fw-bold text-dark mb-3"><i class="fas fa-history me-2 text-primary"></i>Clinical Timeline</h5>
+            {% for record in records %}
+                <div class="card mb-3 border-0 border-start border-4 border-primary shadow-sm rounded-3">
+                    <div class="card-body py-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="text-primary fw-bold mb-0">{{ record.diagnosis }}</h6>
+                            <span class="badge bg-light text-dark fw-normal border">{{ record.date_recorded|date:"M d, Y" }}</span>
+                        </div>
+                        <p class="card-text text-secondary mb-1" style="font-size: 0.9rem;">{{ record.treatment_notes }}</p>
+                        <small class="text-muted italic">— Recorded by Dr. {{ record.doctor.user.last_name }}</small>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-muted small ps-2">No previous medical records found.</p>
+            {% endfor %}
+        </div>
+
+        <div class="col-lg-5">
+
+            <div class="card shadow-sm border-0 mb-4 rounded-4 overflow-hidden">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="mb-0 small fw-bold text-uppercase"><i class="fas fa-stethoscope me-2"></i>Add Diagnosis</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="fw-bold form-label small">Diagnosis</label>
+                            {{ record_form.diagnosis }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold form-label small">Treatment Notes</label>
+                            {{ record_form.treatment_notes }}
+                        </div>
+                        <button type="submit" name="submit_record" class="btn btn-primary w-100 rounded-pill">Save Record</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-success text-white py-3">
+                    <h5 class="mb-0 small fw-bold text-uppercase"><i class="fas fa-pills me-2"></i>Issue Prescription</h5>
+                </div>
+                <div class="card-body">
+                   <form method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label class="fw-bold form-label small">Medications & Dosage</label>
+
+        {{ prescription_form.notes }}
+    </div>
+
+    <button type="submit" name="submit_prescription" class="btn btn-success w-100 rounded-pill">
+        Issue Prescription
+    </button>
+</form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0"><i class="fas fa-file-upload me-2"></i>Upload Lab Report</h4>
+                    <small>Patient: {{ patient.user.get_full_name|default:patient.user.username }}</small>
+                </div>
+                <div class="card-body p-4 bg-light">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Test Name</label>
+                            {{ form.test_name }}
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Select File (PDF, JPG, PNG)</label>
+                            {{ form.report_file }}
+                            <div class="form-text text-muted">Please ensure the document is clear and readable.</div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg shadow-sm">
+                                <i class="fas fa-cloud-upload-alt me-2"></i>Upload Report
+                            </button>
+                            {% if user.is_doctor %}
+                                <a href="{% url 'patient_detail' patient.id %}" class="btn btn-outline-secondary">Cancel</a>
+                            {% else %}
+                                <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

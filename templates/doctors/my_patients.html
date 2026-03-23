@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary fw-bold"><i class="fas fa-users-medical me-2"></i>My Patients List</h2>
+        <div>
+            <a href="{% url 'doctor_dashboard' %}" class="btn btn-outline-secondary shadow-sm rounded-pill">
+                <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        {% for patient in patients %}
+        <div class="col-md-4 col-lg-3">
+            <div class="card h-100 shadow-sm border-0 text-center pt-4 overflow-hidden hover-card">
+                {% if patient.profile_picture %}
+                    <img src="{{ patient.profile_picture.url }}" class="rounded-circle mx-auto mb-3" width="80" height="80" style="object-fit: cover;">
+                {% else %}
+                    <div class="rounded-circle bg-light text-primary mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-user fa-3x"></i>
+                    </div>
+                {% endif %}
+
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-1">{{ patient.user.get_full_name|default:patient.user.username }}</h5>
+                    <p class="text-muted small mb-3">Blood Group: <strong class="text-danger">{{ patient.blood_group|default:"N/A" }}</strong></p>
+
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'patient_detail' patient.id %}" class="btn btn-primary btn-sm rounded-pill">
+                            <i class="fas fa-file-medical me-1"></i> View Clinical File
+                        </a>
+                        <a href="{% url 'upload_lab_report' patient.id %}" class="btn btn-outline-warning btn-sm rounded-pill">
+                            <i class="fas fa-file-upload me-1"></i> Upload Lab Report
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <div class="mb-3 text-muted">
+                <i class="fas fa-user-slash fa-4x opacity-25"></i>
+            </div>
+            <h5 class="text-muted">You have no patients assigned to you yet.</h5>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .hover-card:hover {
+        transform: translateY(-5px);
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+</style>
+{% endblock %}

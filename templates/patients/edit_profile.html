@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0"><i class="fas fa-user-edit me-2"></i>Edit My Profile</h4>
+                </div>
+                <div class="card-body p-4 bg-light">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                      enctype="multipart/form-data"
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Date of Birth</label>
+                                {{ form.date_of_birth }}
+                            </div>
+                            <div class="col-md-6 mt-3 mt-md-0">
+                                <label class="form-label fw-bold">Blood Group</label>
+                                {{ form.blood_group }}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Contact Number</label>
+                            {{ form.contact_number }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Address</label>
+                            {{ form.address }}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Profile Picture</label>
+                            {{ form.profile_picture }}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg shadow-sm">Save Changes</button>
+                            <a href="{% url 'patient_dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

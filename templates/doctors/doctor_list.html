@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* Makes the card lift up slightly */
+    .doctor-card-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .doctor-card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+    }
+
+    /* Hides the button by default, reveals it on hover */
+    .book-now-container {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        height: 0;
+        overflow: hidden;
+    }
+    .doctor-card-hover:hover .book-now-container {
+        opacity: 1;
+        height: auto;
+        margin-top: 15px; /* Adds space above the button when it appears */
+    }
+</style>
+
+<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center p-4">
+      <div class="modal-header border-0 pb-0">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pb-4">
+        <i class="fas fa-user-lock fa-3x text-primary mb-3"></i>
+        <h4 class="fw-bold mb-3">Login Required</h4>
+        <p class="text-muted mb-4">You need to be logged into a Patient account to book an appointment with our world-class doctors.</p>
+        <div class="d-grid gap-2 col-10 mx-auto">
+            <a href="{% url 'login' %}" class="btn btn-primary fw-bold">Login to Account</a>
+            <a href="{% url 'register' %}" class="btn btn-outline-primary fw-bold">Register New Account</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-primary">Find a Doctor</h2>
+        <p class="text-muted">Search our directory of world-class medical professionals.</p>
+    </div>
+
+    <div class="card shadow-sm border-0 bg-light mb-5">
+        <div class="card-body p-4">
+            <form method="GET" action="{% url 'doctor_list' %}" class="row g-3">
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="fas fa-search text-muted"></i></span>
+                        <input type="text" name="search" class="form-control" placeholder="Search by name or specialization..." value="{{ search_query }}">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <select name="department" class="form-select">
+                        <option value="">All Departments</option>
+                        {% for dept in departments %}
+                            <option value="{{ dept.id }}" {% if dept_filter == dept.id|stringformat:"s" %}selected{% endif %}>{{ dept.name }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2 d-grid">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        {% for doctor in doctors %}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+
+            <div class="card h-100 shadow-sm border-0 text-center pt-4 dept-card doctor-card-hover">
+
+                {% if doctor.profile_picture %}
+                    <img src="{{ doctor.profile_picture.url }}" class="rounded-circle mx-auto mb-3 shadow-sm" width="100" height="100" style="object-fit: cover;">
+                {% else %}
+                    <div class="rounded-circle bg-primary text-white mx-auto mb-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 100px; height: 100px;">
+                        <i class="fas fa-user-md fa-3x"></i>
+                    </div>
+                {% endif %}
+
+                <div class="card-body pb-4">
+                    <h5 class="card-title fw-bold">Dr. {{ doctor.user.get_full_name|default:doctor.user.username }}</h5>
+                    <p class="text-muted small mb-1">{{ doctor.department.name|default:"General" }}</p>
+                    <p class="text-primary small fw-bold mb-0">{{ doctor.specialization }}</p>
+
+                    <div class="book-now-container mt-2">
+                        {% if user.is_authenticated and user.is_patient %}
+                            <a href="{% url 'book_appointment' %}?doctor={{ doctor.id }}" class="btn btn-primary w-100 fw-bold rounded-pill">
+                                <i class="fas fa-calendar-check me-2"></i> Book Now
+                            </a>
+                        {% elif not user.is_authenticated %}
+                            <button type="button" class="btn btn-primary w-100 fw-bold rounded-pill" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                <i class="fas fa-calendar-check me-2"></i> Book Now
+                            </button>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <h4 class="text-muted"><i class="fas fa-search-minus fa-2x mb-3 d-block"></i>No doctors match your search criteria.</h4>
+            <a href="{% url 'doctor_list' %}" class="btn btn-link">Clear Filters</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

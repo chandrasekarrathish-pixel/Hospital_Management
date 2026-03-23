@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Contact Support / Emergency Enquiry</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="message" rows="4" required></textarea><br><br>
+
+        <label>
+            <input type="checkbox" name="is_emergency"> 
+            <strong style="color: red;">This is a medical emergency</strong>
+        </label><br><br>
+
+        <button type="submit">Send Message</button>
+    </form>
+{% endblock %}

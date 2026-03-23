@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow border-0 mt-4">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0"><i class="far fa-calendar-plus me-2"></i>Book an Appointment</h4>
+                </div>
+                <div class="card-body p-4 bg-light">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="d-flex align-items-center mb-4 p-3 bg-white border rounded shadow-sm">
+    <div class="me-3">
+        <i class="fas fa-user-md fa-3x text-primary"></i>
+    </div>
+    <div>
+        <h5 class="mb-0">Dr. {{ doctor.user.get_full_name }}</h5>
+        <small class="text-muted">{{ doctor.specialization }}</small>
+    </div>
+</div>
+
+                    <form method="POST">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Select Doctor</label>
+        {{ form.doctor }}
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label fw-bold">Date</label>
+            {{ form.appointment_date }}
+            {% if form.appointment_date.errors %}
+                <small class="text-danger">{{ form.appointment_date.errors.0 }}</small>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6 mt-3 mt-md-0">
+            <label class="form-label fw-bold">Time Slot</label>
+            {{ form.appointment_time }}
+            {% if form.appointment_time.errors %}
+                <small class="text-danger">{{ form.appointment_time.errors.0 }}</small>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label class="form-label fw-bold">Symptoms (Optional)</label>
+        {{ form.symptoms }}
+    </div>
+
+    <div class="d-grid">
+        <button type="submit" class="btn btn-success btn-lg shadow-sm">
+            <i class="fas fa-check-circle me-2"></i>Request Appointment
+        </button>
+    </div>
+</form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

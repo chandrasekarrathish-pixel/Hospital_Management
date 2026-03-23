@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .fade-in-up {
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .hover-card:hover {
+        transform: translateY(-5px);
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    .icon-box {
+        transition: transform 0.3s ease;
+    }
+    .hover-card:hover .icon-box {
+        transform: scale(1.1);
+    }
+</style>
+<div class="container py-4">
+    <div class="mb-4 fade-in-up">
+        <h2 class="fw-bold text-dark">Welcome, Dr. {{ doctor.user.last_name }}</h2>
+        <p class="text-muted">You have <span class="text-primary fw-bold">{{ today_appointments.count }}</span> appointments scheduled for today.</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm rounded-4 mb-4 hover-card fade-in-up" style="animation-delay: 0.1s;">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0 text-primary"><i class="fas fa-calendar-day me-2"></i>Today's Schedule</h5>
+                </div>
+                <div class="card-body p-0">
+                    {% for appt in today_appointments %}
+                    <div class="d-flex justify-content-between align-items-center p-4 border-bottom">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 me-3 icon-box">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">{{ appt.patient.user.get_full_name }}</h6>
+                                <small class="text-muted">{{ appt.appointment_time|time:"g:i A" }} • ID: #{{ appt.patient.id }}</small>
+                            </div>
+                        </div>
+                        <a href="{% url 'patient_detail' appt.patient.id %}" class="btn btn-primary rounded-pill px-4">
+                            <i class="fas fa-user-md me-2"></i>Consult
+                        </a>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-5 text-muted">
+                        <i class="fas fa-calendar-check fa-3x mb-3 opacity-25"></i>
+                        <p>No appointments for today.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 hover-card fade-in-up" style="animation-delay: 0.2s;">
+                <div class="card-header bg-white py-3 border-0">
+                    <h5 class="fw-bold mb-0 text-danger"><i class="fas fa-user-clock me-2"></i>Pending Requests</h5>
+                </div>
+                <div class="card-body p-0">
+                    {% for appt in pending_appointments %}
+                    <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                        <div>
+                            <span class="fw-bold">{{ appt.patient.user.get_full_name }}</span>
+                            <div class="small text-muted">{{ appt.appointment_date }}</div>
+                        </div>
+                        <div class="btn-group">
+                            <a href="{% url 'approve_appointment' appt.pk %}" class="btn btn-sm btn-success rounded-start-pill px-3">Approve</a>
+                            <a href="{% url 'reject_appointment' appt.pk %}" class="btn btn-sm btn-outline-danger rounded-end-pill px-3">Reject</a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-4 text-muted small">No new requests.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 p-3 hover-card fade-in-up" style="animation-delay: 0.3s;">
+                <h6 class="fw-bold mb-3 text-uppercase small text-muted">Quick Actions</h6>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'my_patients' %}" class="btn btn-light text-start py-3 border-0 rounded-3">
+                        <i class="fas fa-users text-primary me-2"></i> My Patients
+                    </a>
+                    <a href="{% url 'doctor_list' %}" class="btn btn-light text-start py-3 border-0 rounded-3">
+                        <i class="fas fa-history text-success me-2"></i> Search History
+                    </a>
+                    <a href="{% url 'my_patients' %}" class="btn btn-light text-start py-3 border-0 rounded-3">
+                    <i class="fas fa-file-medical text-info me-2"></i> Upload Lab Results</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

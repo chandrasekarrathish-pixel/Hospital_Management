@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+    <div class="container">
+        <a class="navbar-brand" href="/">CityCare</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <p class="text-white small">Debug: Your Group is [{{ user.groups.all.0.name }}]</p>
+          <ul class="navbar-nav ms-auto">
+    {% if user.is_authenticated %}
+
+        {% elif "Pharmacy_Worker" in user.groups.all.0.name or "Pharmacy_Worker" in user.groups.all.1.name %}
+        <li class="nav-item">
+            <a class="nav-link btn btn-success text-white px-3 rounded-pill shadow-sm" href="{% url 'pharmacy_worker_dashboard' %}">
+                Pharmacy Portal
+            </a>
+        </li>
+
+        {% elif user.is_superuser %}
+            <li class="nav-item"><a class="nav-link btn btn-primary text-white px-3 rounded-pill" href="{% url 'admin_panel' %}">Admin Panel</a></li>
+
+        {% elif user.is_doctor %}
+            <li class="nav-item"><a class="nav-link btn btn-info text-white px-3 rounded-pill" href="{% url 'doctor_dashboard' %}">Doctor Portal</a></li>
+
+        {% else %}
+            <li class="nav-item"><a class="nav-link btn btn-primary text-white px-3 rounded-pill" href="{% url 'patient_dashboard' %}">My Portal</a></li>
+        {% endif %}
+
+        <li class="nav-item ms-2">
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="nav-link btn btn-danger text-white px-3 rounded-pill border-0 shadow-sm">Logout</button>
+            </form>
+        </li>
+    {% endif %}
+</ul>
+        </div>
+    </div>
+</nav>

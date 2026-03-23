@@ -1,0 +1,42 @@
+<div style="padding: 40px; border: 2px solid #000; max-width: 800px; margin: 20px auto; font-family: 'Segoe UI', sans-serif;">
+    <div style="text-align: center; border-bottom: 2px solid #eee; padding-bottom: 20px;">
+        <h1 style="color: #0d6efd; margin: 0;">CityCare Hospital</h1>
+        <p style="margin: 5px 0; color: #666;">Official Medical Prescription</p>
+    </div>
+
+    <div style="margin-top: 30px; display: flex; justify-content: space-between;">
+        <div>
+            <p><strong>Patient:</strong> {{ rx.patient.user.get_full_name }}</p>
+            <p><strong>Age/DOB:</strong> {{ rx.patient.date_of_birth }}</p>
+        </div>
+        <div style="text-align: right;">
+            <p><strong>Date:</strong> {{ rx.date_issued|date:"M d, Y" }}</p>
+            <p><strong>Doctor:</strong> Dr. {{ rx.doctor.user.last_name }}</p>
+        </div>
+    </div>
+
+   <div style="margin-top: 40px; padding: 20px; background-color: #f8f9fa; border-radius: 10px; min-height: 200px;">
+    <h4 style="border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-top: 0;">Rx - Medications & Dosage</h4>
+    <div style="line-height: 1.6; font-size: 1.1rem; color: #333;">
+
+        {{ rx.notes|linebreaks|default:"<span style='color:red;'>[Data Error: Check your model field name]</span>" }}
+
+    </div>
+</div>
+
+<div style="margin-top: 60px; text-align: right;">
+    <div style="display: inline-block; text-align: center;">
+        <p style="font-family: 'Brush Script MT', cursive; font-size: 1.5rem; margin-bottom: 0;">
+            Dr. {{ rx.doctor.user.last_name }}
+        </p>
+        <div style="width: 200px; border-top: 1px solid #000; padding-top: 5px;">
+            Authorized Signature
+        </div>
+    </div>
+</div>
+
+    <script>
+        // Automatically opens the print dialog so user can "Save as PDF"
+        window.onload = function() { window.print(); }
+    </script>
+</div>
