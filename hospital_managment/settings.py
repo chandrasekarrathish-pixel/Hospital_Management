@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-bl^bfk^2anvyr=!3k9@t^8y_-xf)g3_qbf3qk2@624x*s0_i#&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['hospital-management-ivory-one.vercel.app', '.vercel.app', '127.0.0.1', 'localhost']
 
 
 # Application definition
